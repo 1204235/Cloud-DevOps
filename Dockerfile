@@ -3,4 +3,4 @@ COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
 EXPOSE 5001
-CMD ["python", 0src/docker-python-flast.py"]
+CMD ["python", "src/docker-python-flast.py"]
