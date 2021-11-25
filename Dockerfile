@@ -8,7 +8,7 @@ RUN mkdir /install
 WORKDIR /install
 
 COPY requirements.txt /requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install -r /requirements.txt
 
 FROM base
 ENV FLASK_APP docker-python-flast.py
