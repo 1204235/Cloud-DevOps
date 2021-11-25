@@ -2,5 +2,7 @@ FROM python:3.6
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
-EXPOSE 80
-CMD ["python", "src/docker-python-flast.py"]
+EXPOSE 5001
+ENTRYPOINT [ "python" ]
+CMD [ "docker-python-flast.py" ]
+
