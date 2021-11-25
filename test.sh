@@ -1,2 +1,1 @@
-This is test file
-sudo ps -ef | grep jenkins
+echo " This is awesome testing"
