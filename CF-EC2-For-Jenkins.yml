@@ -1,0 +1,112 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Template to build EC2 server for Jenkins.
+Parameters:
+  EC2InstanceType:
+    Description: Instance Type of the server to be created
+    Type: String
+    Default: t2.micro
+    ConstraintDescription: Must be the valid Instance Type.
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+  EC2InstanceRoleName:
+    Description: Enter a name for EC2 IAM Role
+    Type: String
+  Subnet:
+    Description: Provide SubnetID to which EC2 instance be created
+    Type: AWS::EC2::Subnet::Id
+
+Resources:
+  ServerIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Path: "/"
+      RoleName:
+        Ref: EC2InstanceRoleName
+  RootInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: ServerIAMRole
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: App server
+      GroupName: App     
+      VpcId: vpc-0c38ede69ec77fd4e   #This can be Parameterized
+      SecurityGroupIngress:
+        -
+          IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        -
+          IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+        -
+          IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        -
+          IpProtocol: tcp
+          FromPort: 5001
+          ToPort: 5001
+          CidrIp: 0.0.0.0/0
+    
+  LinuxEC2Instance:
+    Type: AWS::EC2::Instance
+    DependsOn:
+    - RootInstanceProfile
+    Properties:
+      InstanceType:
+        Ref: EC2InstanceType
+      IamInstanceProfile:
+        Ref: RootInstanceProfile
+      SecurityGroupIds:
+        - !Ref SSHSecurityGroup
+      SubnetId:
+        Ref: Subnet
+      KeyName:
+        Ref: KeyName
+      ImageId: ami-04902260ca3d33422  # Amazon Linux2 AMI for us-east-1
+      DisableApiTermination: 'true'
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Join:
+          - ''
+          - - AWS
+            - "-"
+            - Jenkins
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeType: gp2
+            VolumeSize: '8'
+            DeleteOnTermination: 'false'
+
+Outputs:
+  LinuxEC2ServerInstanceId:
+    Description: InstanceId of the newly created EC2Instance
+    Value:
+      Ref: LinuxEC2Instance
+    Export:
+      Name:
+        Fn::Sub: "${AWS::StackName}-LinuxEC2Instance"
