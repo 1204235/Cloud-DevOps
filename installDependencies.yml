@@ -1,0 +1,14 @@
+---
+- hosts: My_Group
+  tasks:
+    - name: install epel
+      shell: /usr/bin/amazon-linux-extras install epel -y
+ 
+    - name: install dependencies
+      yum:
+        name: "{{ package }} "
+        state: present
+      vars:
+        package:
+        - wget
+        - daemonize
