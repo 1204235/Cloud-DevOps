@@ -1,13 +1,13 @@
 # Cloud-DevOps
 
 Steps followed to complete the Challenge for Cloud DevOps
-1. created 2 EC2 Instances(1 for Ansible and 1 for Jenkins) using CloudFormation templates(CF-EC2-For-Ansible.yml/CF-EC2-For-Jenkins.yml).
+1. created 2 EC2 Instances(1 for Ansible and 1 for Jenkins) using CloudFormation templates(CF-EC2-For-Ansible.yml / CF-EC2-For-Jenkins.yml).
 2. Established SSH connectivity between above 2 ec2 Instances.
 3. Created Java playbook on Ansible EC2 instance and installed java on Jenkins ec2 instance.
 4. Created Dependencies playbook on Ansible EC2 instance and installed dependencies required for Jenkins on Jenkins ec2 instance.
 5. Created jenkins playbook on Ansible EC2 instance and installed Jenkins on Jenkins ec2 instance.
 
-Post creation of 2 EC2 instances using Cloud Formation templates (CF-EC2-For-Ansible.yml/CF-EC2-For-Jenkins.yml) Followed below steps to setup ssh connectivity between Ansible and Jenkins instance to install the Java 8 and jenkins using ansible.
+Post creation of 2 EC2 instances using Cloud Formation templates (CF-EC2-For-Ansible.yml / CF-EC2-For-Jenkins.yml) Followed below steps to setup ssh connectivity between Ansible and Jenkins instance to install the Java 8 and jenkins using ansible.
   a. login to Ansible EC2 instance and generate SSH keys.
   b. ssh-keygen
   c. sudo cat ~/.ssh/id_rsa.pub #copy content of this file and paste it in Jenkins EC2 instance.
