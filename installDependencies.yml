@@ -12,3 +12,4 @@
         package:
         - wget
         - daemonize
+        - git
