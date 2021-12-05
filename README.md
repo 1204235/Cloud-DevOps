@@ -47,6 +47,7 @@ While running the pipeline, got below issue
 Added below line in visudo file on Jenkins EC2 instance to fix it.
 jenkins ALL=(ALL) NOPASSWD: ALL
       
+* Post Slack account open, install the 'slack notification' plugin in jenins under manage jenkins > manage plugin.
       
   
 
