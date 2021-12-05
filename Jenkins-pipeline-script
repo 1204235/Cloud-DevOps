@@ -2,7 +2,7 @@ node {
    stage('Get Source') {
       // copy source code from local file system and test
       // for a Dockerfile to build the Docker image
-      git ('https://github.com/1204235/Cloud-DevOps.git')
+      git ('https://github.com/shivaraj-sp/Cloud-DevOps.git')
       if (!fileExists("Dockerfile")) {
          error('Dockerfile missing.')
       }
