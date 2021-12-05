@@ -32,6 +32,8 @@ sudo ansible-playbook installJenkins.yml
 Post successful installation of jenkins, able to access URL http://{PUBLIC_IP}:8080
 
 Got the initial password from path :- cat /var/lib/jenkins/secrets/initialAdminPassword on Jenkins EC2 instance.
+update visudo file like "jenkins ALL=(ALL) NOPASSWD: ALL"
+install slack notification & build pipeline plugins
 
 Installd Docker on jenkins ec2 server to create the docker image and run containers.
 sudo amazon-linux-extras install docker
